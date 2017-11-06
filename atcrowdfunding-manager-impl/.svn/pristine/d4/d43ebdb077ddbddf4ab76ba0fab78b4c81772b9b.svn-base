@@ -1,0 +1,72 @@
+package com.xuxueya.atcrowdfunding.manager.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.xuxueya.atcrowdfunding.bean.Permission;
+import com.xuxueya.atcrowdfunding.manager.service.PermissionService;
+import com.xuxueya.atcrowdfunding.util.AjaxResult;
+
+@Controller
+@RequestMapping("/permission")
+public class PermissionController {
+	@Autowired
+private PermissionService permissionService;
+	@RequestMapping("/index")
+	public String toIndex() {
+		return "permission/index";
+	}
+	/*demo1假数据的封装
+	@ResponseBody
+	@RequestMapping("/loadData")
+	public Object doloadData() {
+		AjaxResult result=new AjaxResult();
+		try {
+			Permission permission = new Permission("系统权限菜单");
+			Permission permission1 = new Permission("控制面板");
+			Permission permission2 = new Permission("消息管理");
+			Permission permission3 = new Permission("权限管理");
+			permission.getChildren().add(permission1);
+			permission.getChildren().add(permission2);
+			permission.getChildren().add(permission3);
+			permission.setOpen(true);
+			result.setData(permission);
+			 result.setSuccess(true);
+		} catch (Exception e) {
+    
+         result.setSuccess(false);
+         e.printStackTrace();
+		}
+		return result;
+	}*/
+	@ResponseBody
+	@RequestMapping("/loadData")
+	public Object doloadData() {
+		AjaxResult result=new AjaxResult();
+		try {
+			//查询树的根元素
+			Permission permission =permissionService.queryRootPermission();
+			//查询树的一级子元素
+			List<Permission> firstChildren=permissionService.queryChildrenPermission(permission.getId());
+			permission.setChildren(firstChildren);
+			//查询树的二级子元素
+			for (Permission firstchildrenPermission : firstChildren) {
+		List<Permission> nodechildren=permissionService.queryChildrenPermission(firstchildrenPermission.getId());
+		firstchildrenPermission.setChildren(nodechildren);
+			}
+			permission.setOpen(true);
+			result.setData(permission);
+			result.setSuccess(true);
+		} catch (Exception e) {
+			
+			result.setSuccess(false);
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+}

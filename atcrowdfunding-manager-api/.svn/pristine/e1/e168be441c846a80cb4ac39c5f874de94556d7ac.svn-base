@@ -1,0 +1,16 @@
+package com.xuxueya.atcrowdfunding.manager.dao;
+
+
+import java.util.List;
+import java.util.Map;
+
+import com.xuxueya.atcrowdfunding.bean.User;
+
+
+public interface UserDao {
+	 User queryUserForLogin(Map<String, Object> map);
+
+	List<User> queryPage(Map<String, Object> paramMap);
+
+	int queryAllsize();
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.xuxueya.atcrowdfunding.manager.dao.CerttypeDao">
+  <select id="queryAllCertType"  resultType="Cert">
+   select * from  t_cert 
+  </select>
+  <select id="queryCertAccttype"  resultType="AccountCertType">
+   select certid,accttype from  t_account_type_cert 
+  </select>
+<insert id="saveCertType" parameterType="AccountCertType">
+insert into t_account_type_cert (certid,accttype) values(#{certid},#{accttype})
+</insert>
+<delete id="deleteCerttype" parameterType="AccountCertType">
+delete from t_account_type_cert where certid=#{certid} and accttype=#{accttype}
+</delete>
+  </mapper>

@@ -1,0 +1,74 @@
+package com.xuxueya.atcrowdfunding.manager.controller;
+import java.util.HashMap;
+import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.xuxueya.atcrowdfunding.bean.User;
+import com.xuxueya.atcrowdfunding.manager.service.UserService;
+
+/**
+ * 如果想知道核心控制器是否生成IOC容器的额=对象就需要给添加注解得类一个构造器然后打印一句话看界面调用了没有
+ * 
+ * @param
+ * @author 徐雪娅
+ */
+@Controller
+public class DispatcherController {
+	public DispatcherController() {
+		System.out.println("DispatcherController() --------------->>");
+	}
+
+	@Autowired
+	private UserService userService;
+
+	@RequestMapping("/index")
+	public String index() {
+		return "index";
+	}
+
+	@RequestMapping("/login")
+	public String login() {
+		return "login";
+	}
+
+	@RequestMapping("/reg")
+	public String reg() {
+		return "reg";
+	}
+	@RequestMapping("/main")
+	public String main() {
+		return "main";
+	}
+
+	@SuppressWarnings("unchecked")
+	@RequestMapping("/doLogin")
+	public String doLogin(String loginacct, String userpswd, String usertype,
+			Map map) {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("loginacct", loginacct);
+		paramMap.put("userpswd", userpswd);
+		User user = userService.queryUserForLogin(paramMap);
+		if (user == null) {
+			map.put("errorMessage", "用户名或密码不正确");
+			return "login";
+		} else {
+
+			if ("member".equals(usertype)) {
+				// redirect:/ 表示webcontext目录下的index.jsp然后进行转发
+				return "redirect:/";
+			} else if ("user".equals(usertype)) {
+				// 转发的话无法再域当中传输数据做回显也就是不携带数据源
+				// 从定向回去的界面不走核心控制器所以需要加上后缀让它在web.xml中做资源的映射
+				// .htm结尾的代表不走业务层的代码
+				System.out.println("main界面还未设计完成");
+				return "redirect:/main.htm";
+			} else {
+				throw new RuntimeException("非法登录");
+			}
+		}
+
+	}
+
+}

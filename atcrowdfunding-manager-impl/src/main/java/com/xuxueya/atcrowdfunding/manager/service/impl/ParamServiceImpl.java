@@ -1,0 +1,56 @@
+package com.xuxueya.atcrowdfunding.manager.service.impl;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.xuxueya.atcrowdfunding.bean.Param;
+import com.xuxueya.atcrowdfunding.manager.dao.ParamDao;
+import com.xuxueya.atcrowdfunding.manager.service.ParamService;
+import com.xuxueya.atcrowdfunding.util.Datas;
+import com.xuxueya.atcrowdfunding.util.Page;
+@Service
+public class ParamServiceImpl implements ParamService {
+@Autowired
+	private  ParamDao paramDao;
+
+@Override
+public Page<Param> queryPage(Map<String, Object> paraMap) {
+Page<Param> page=new Page<>((int)paraMap.get("pageNo"),(int)paraMap.get("pageSize") );
+ int startIndex = page.getStartIndex();
+paraMap.put("startIndex", startIndex);
+int count=paramDao.queryTotalSize(paraMap);
+ List<Param> datas=paramDao.queryPage(paraMap);
+
+   page.setTotalSize(count);
+   page.setData(datas);
+	return page;
+}
+
+@Override
+public int insert(Param param) {
+	return paramDao.insert(param);
+}
+
+@Override
+public Param queryParamByID(Integer id) {
+	return paramDao.queryParamByID( id);
+}
+
+@Override
+public int update(Param param) {
+	return paramDao.update( param);
+}
+
+@Override
+public int delete(Integer id) {
+	return paramDao.delete(id);
+}
+
+@Override
+public int deletes(Datas datas) {
+	return paramDao.deletes(datas);
+} 
+}

@@ -1,0 +1,29 @@
+package com.xuxueya.atcrowdfunding.manager.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.xuxueya.atcrowdfunding.bean.Permission;
+import com.xuxueya.atcrowdfunding.manager.dao.PermissionDao;
+import com.xuxueya.atcrowdfunding.manager.service.PermissionService;
+@Service
+public class PermissionServiceimpl implements PermissionService {
+	@Autowired
+ private PermissionDao permissionDao;
+
+	@Override
+	public Permission queryRootPermission() {
+		return permissionDao.queryRootPermission();
+	}
+
+	@Override
+	public List<Permission> queryChildrenPermission(Integer pid) {
+		return permissionDao.queryChildrenPermission(pid);
+	}
+
+
+
+ 
+}

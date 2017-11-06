@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.xuxueya.atcrowdfunding.manager.dao.ProjectTypeDao">
+  <select id="queryProjectTypeById" parameterType="int" resultType="ProjectType">
+  select * from t_type where id=#{id}
+  </select>
+  <select id="queryPageList" parameterType="map" resultType="ProjectType">
+  select * from t_type
+ <where>
+ <if test="pagetext!=null">
+ name=#{pagetext}
+ </if>
+ </where>
+ order by id desc
+ limit #{startIndex},#{pageSize}
+ </select>
+  <select id="queryTotalSize" parameterType="map" resultType="int">
+  select count(*) from t_type
+ <where>
+ <if test="pagetext!=null">
+ name=#{pagetext}
+ </if>
+ </where>
+ </select>
+ <insert id="saveProjectType" parameterType="ProjectType">
+ insert into t_type (name,remark) values(#{name},#{remark})
+ </insert>
+ <update id="updateProjectType" parameterType="map">
+ update t_type set name=#{projectType.name},remark=#{projectType.remark}
+ where id=#{id}
+ </update>
+ <delete id="deleteProjectType" parameterType="int">
+ delete from t_type where id=#{id}
+ </delete>
+ <delete id="deleteAllProjectType">
+ delete from t_type where id  in
+ <foreach collection="datas" item="projectType" open="(" close=")" separator=",">
+ #{projectType.id}
+ </foreach>
+ </delete>
+<!--  <delete id="deleteAllProjectType"> -->
+<!--  delete from t_type where id  in -->
+<!--  <foreach collection="list" item="id" open="(" close=")" separator=","> -->
+<!--  #{id} -->
+<!--  </foreach> -->
+<!--  </delete> -->
+  </mapper>

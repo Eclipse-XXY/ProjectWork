@@ -1,0 +1,7 @@
+package com.xuxueya.atcrowdfunding.manager.dao;
+
+public interface TestDao {
+
+	void test();
+
+}

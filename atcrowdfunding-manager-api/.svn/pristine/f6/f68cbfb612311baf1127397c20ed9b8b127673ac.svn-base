@@ -1,0 +1,23 @@
+package com.xuxueya.atcrowdfunding.manager.service;
+
+import java.util.Map;
+
+import com.xuxueya.atcrowdfunding.bean.Param;
+import com.xuxueya.atcrowdfunding.util.Datas;
+import com.xuxueya.atcrowdfunding.util.Page;
+
+public interface ParamService {
+
+	Page<Param> queryPage(Map<String, Object> paraMap);
+
+	int insert(Param param);
+
+	Param queryParamByID(Integer id);
+
+	int update(Param param);
+
+	int delete(Integer id);
+
+	int deletes(Datas<Param> datas);
+
+}

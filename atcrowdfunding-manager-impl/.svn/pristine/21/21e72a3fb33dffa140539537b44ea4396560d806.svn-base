@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.xuxueya.atcrowdfunding.manager.dao.PermissionDao">
+  <select id="queryRootPermission" resultType="Permission">
+  select *from t_permission where pid is null
+  </select>
+  <select id="queryChildrenPermission" parameterType="int" resultType="Permission">
+  select *from t_permission where pid =#{pid}
+  </select>
+  <select id="queryAllPermission" resultType="Permission">
+  select *from t_permission
+  </select>
+  <select id="getPermissionById" parameterType="int" resultType="Permission">
+   select *from t_permission where id=#{id}
+  </select>
+  <insert id="savePermission" parameterType="Permission">
+  insert into t_permission (pid,name,icon,url) values(#{pid},#{name},#{icon},#{url})
+  </insert>
+  <update id="updatePermission">
+  update t_permission set name=#{name},url=#{url} where id=#{id}
+  </update>
+  <delete id="deletePermission" parameterType="int">
+  delete from t_permission where id=#{id}
+  </delete>
+  <select id="queryRolePermissionByRoleId" parameterType="int" resultType="int">
+  select permissionid from t_role_permission where roleid =#{roleid}
+  </select>
+  </mapper>

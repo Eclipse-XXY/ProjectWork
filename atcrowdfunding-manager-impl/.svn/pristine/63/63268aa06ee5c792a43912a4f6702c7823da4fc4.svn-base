@@ -1,0 +1,80 @@
+package com.xuxueya.atcrowdfunding.manager.controller;
+
+import java.util.HashMap;
+
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.xuxueya.atcrowdfunding.bean.User;
+import com.xuxueya.atcrowdfunding.manager.service.UserService;
+import com.xuxueya.atcrowdfunding.util.AjaxResult;
+
+import com.xuxueya.atcrowdfunding.util.Page;
+/**
+ * 用于处理管理员的相关操作
+ * @param
+ * @author 徐雪娅
+ */
+@Controller
+@RequestMapping("/user")
+public class UserController {
+	@Autowired
+private UserService userService;
+	
+	
+	//同步的分页请求方式
+//	@RequestMapping(value="/index",method=RequestMethod.GET)
+//	public String queryPage(@RequestParam(value="pageNo",required=false,defaultValue="1") int pageNo,
+//			@RequestParam(value="pageSize",required=false,defaultValue="2")int pageSize,Map< String , Object > map) {
+//		框架当中想给请求的参数赋值默认的值可以使用@RequestParam标签让这种初始化的事情交给框架去做
+//		//该parammap是用来保存接收的参数的
+//		
+//		Map<String, Object> paramMap=new HashMap<String, Object>();
+//		
+//		paramMap.put("pagesize", pageSize);
+//		paramMap.put("pageno", pageNo);
+//	
+//		Page<User> currpagelist = userService.queryPage(paramMap);
+//		//这个map是放到请求域当中的
+//		map.put(Const.PAGE, currpagelist);
+//		return "user/index";
+//	}
+	
+	
+	
+	//异步的分页请求方式
+//	框架当中想给请求的参数赋值默认的值可以使用@RequestParam标签让这种初始化的事情交给框架去做
+	//该parammap是用来保存接收的参数的
+	//直接用于界面的展示
+	@RequestMapping(value="/index")
+	public String index() {
+		return "user/index";
+	}
+	//真的的进行数据的传输
+	//表示传到客户端是以JSON字符串的形式
+	@ResponseBody
+	@RequestMapping(value="/doindex")
+public Object doindex(@RequestParam(value="pageNo",required=false,defaultValue="1") int pageNo,
+		@RequestParam(value="pageSize",required=false,defaultValue="2")int pageSize,Map< String , Object > map) {
+		AjaxResult result = new AjaxResult();
+	try {
+		Map<String, Object> paramMap=new HashMap<String, Object>();
+		paramMap.put("pagesize", pageSize);
+		paramMap.put("pageno", pageNo);
+		Page<User> currpagelist = userService.queryPage(paramMap);
+		result.setPage(currpagelist);
+		result.setSuccess(true);
+	} catch (Exception e) {
+		result.setErrorMessage("查询信息失败");
+		result.setSuccess(false);
+	}
+
+	return result;
+}
+	}

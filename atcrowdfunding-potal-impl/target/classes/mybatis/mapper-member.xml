@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xuxueya.atcrowdfunding.potal.dao.MemberDao">
+<select id="queryMemberForLogin" parameterType="map" resultType="member">
+select id,loginacct, userpswd, username, email, authstatus, usertype,
+			realname, cardnum, accttype from t_member where loginacct=#{loginacct} and userpswd=#{userpswd}
+</select>
+<select id="queryMemberByid" parameterType="int" resultType="member">
+select * from t_member where id=#{id}
+</select>
+<update id="updateAcctType" parameterType="member">
+update t_member set accttype=#{accttype} where id=#{id}
+</update>
+<!-- 多个参数之间赋值的时候记住要使用，隔开 -->
+<update id="doupdatebasicinfo" parameterType="member">
+update t_member set realname=#{realname}, cardnum=#{cardnum},
+tel=#{tel} where id=#{id}
+</update>
+<insert id="uploadimg" parameterType="memberCert">
+insert into t_member_cert (memberid,certid,iconpath) 
+values(#{memberid},#{certid},#{iconpath})
+</insert>
+<update id="updateEmail" parameterType="string">
+update t_member set
+email = #{email}  where id=#{id}
+</update>
+<update id="upateAuthStatus" parameterType="member">
+update t_member set
+authstatus = #{authstatus}  where id=#{id}
+</update>
+
+</mapper>

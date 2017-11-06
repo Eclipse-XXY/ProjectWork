@@ -1,0 +1,12 @@
+package com.xuxueya.atcrowdfunding.manager.dao;
+
+import java.util.List;
+
+import com.xuxueya.atcrowdfunding.bean.Permission;
+
+public interface PermissionDao {
+
+	Permission queryRootPermission();
+	List<Permission> queryChildrenPermission(Integer pid);
+
+}

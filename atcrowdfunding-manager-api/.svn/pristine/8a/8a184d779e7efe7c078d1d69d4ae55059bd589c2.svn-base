@@ -1,0 +1,19 @@
+package com.xuxueya.atcrowdfunding.manager.service;
+
+import java.util.Map;
+
+import com.xuxueya.atcrowdfunding.bean.User;
+import com.xuxueya.atcrowdfunding.util.Page;
+
+
+/**
+ *该处的方法用map目的是他是接口我可以接受多个参数便于实现类或者是框架的代理类的利用
+ * @param
+ * @author 徐雪娅
+ */
+public interface UserService {
+	
+ User queryUserForLogin(Map<String,Object> map);
+
+Page<User> queryPage(Map<String, Object> paramMap);
+}

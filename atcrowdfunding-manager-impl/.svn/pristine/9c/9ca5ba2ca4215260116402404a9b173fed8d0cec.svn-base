@@ -1,0 +1,21 @@
+package com.xuxueya.atcrowdfunding.manager.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.xuxueya.atcrowdfunding.manager.dao.TestDao;
+import com.xuxueya.atcrowdfunding.manager.service.TestService;
+
+@Service
+public class TestServiceImpl implements TestService {
+
+	@Autowired
+	private TestDao testDao ;
+	
+	@Override
+	public void test() {
+		System.out.println("TestServiceImpl - test() .... ");
+		//testDao.test();
+	}
+
+}

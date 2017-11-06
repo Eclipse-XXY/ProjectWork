@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.xuxueya.atcrowdfunding.manager.dao.CertDao">
+  <select id="queryCert" parameterType="int" resultType="cert">
+   select * from  t_cert  where id=#{id}
+  </select>
+  <select id="queryTotalSize" parameterType="map"  resultType="int">
+  select count(id) from t_cert
+  <where>
+  <if test="pagetext!=null">
+  name like concat('%',#{pagetext},'%')
+  </if>
+  </where>
+  </select>
+<!--   <select id="queryPage" resultType="Cert"> -->
+<!--   select * from t_cert  -->
+<!--    <where> -->
+<!--   <if test="pagetext!=null"> -->
+<!--   and name like concat('%',#{pagetext},'%') -->
+<!--   </if> -->
+<!--   </where> -->
+<!--   order by id desc -->
+<!--   limit #{startIndex},#{pageSize} -->
+<!--   </select> -->
+<select id="queryPage" parameterType="map" resultType="Cert">
+        select * from t_cert
+        <where>
+            <if test="pagetext != null">
+            and name like concat('%', #{pagetext}, '%')
+            </if>
+        </where>
+        limit #{startIndex}, #{pageSize}
+    </select>
+  <insert id="saveCert" >
+  insert into t_cert (name) values ( #{cert.name})
+  </insert>
+
+<update id="update" parameterType="map">
+update t_cert set name=#{cert.name} where id=#{id}
+</update>
+<delete id="delete" parameterType="int">
+delete from t_cert where id=#{id}
+</delete>
+<delete id="deletes" >
+delete from t_cert where id in
+<foreach collection="datas"  item="cert" open="(" separator="," close=")">
+#{cert.id}
+</foreach>
+</delete>
+
+<select id="queryAcctCert" parameterType="string" resultType="Cert">
+SELECT* FROM t_cert WHERE id IN( SELECT certid FROM t_account_type_cert WHERE accttype=#{accttype})
+
+</select>
+  </mapper>

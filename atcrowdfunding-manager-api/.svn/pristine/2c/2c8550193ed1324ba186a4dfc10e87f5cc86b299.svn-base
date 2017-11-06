@@ -1,0 +1,7 @@
+package com.xuxueya.atcrowdfunding.manager.service;
+
+public interface TestService {
+
+	public void test();
+	
+}

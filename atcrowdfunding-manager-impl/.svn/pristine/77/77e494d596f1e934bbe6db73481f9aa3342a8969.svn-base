@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xuxueya.atcrowdfunding.manager.dao.UserDao">
+	<!-- 如果是一个参数的话parameterType可以省略不写但是返回结果的类型是必须要写的 -->
+	<select id="queryRoleIdByUserId" parameterType="integer" resultType="integer">
+	select roleid from t_user_role where userid=#{id}
+	</select>
+	<select id="queryUserForLogin" parameterType="map" resultType="User">
+		select id,loginacct,userpswd,username,email,createtime from t_user
+		where loginacct=#{loginacct} and userpswd=#{userpswd}
+	</select>
+	<!-- 记住虽然dao层返回的结果是list集合但是框架本省提供的转载返回结果的容器就是集合 所以直接写list集合里面的 数据就可以 -->
+	<!-- 实现条件查询和分页查询的共用 -->
+	<select id="queryPage" parameterType="map" resultType="User">
+		select id,loginacct,userpswd,username,email,createtime from t_user
+		<where>
+			<if test="queryText!=null">
+				loginacct like concat('%',#{queryText},'%')
+			</if>
+		</where>
+		order by createtime desc
+		limit #{startIndex},#{pagesize}
+	</select>
+	<select id="queryAllsize" resultType="int">
+		select count(id) from t_user
+		<where>
+			<if test="queryText!=null">
+				loginacct like concat('%',#{queryText},'%')
+			</if>
+		</where>
+	</select>
+	<!-- useGeneratedKeys是自定回填主键的属性给user对象做后期的查询工作 -->
+	<insert id="addUser" parameterType="user" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into t_user (
+		loginacct,userpswd,username,email,createtime
+		) values (
+		#{loginacct},#{userpswd},#{username},#{email},#{createtime}
+		)
+		<!-- <selectKey keyProperty="id" resultType="int"> -->
+		<!-- select @@identity as id -->
+		<!-- </selectKey> -->
+	</insert>
+	<insert id="saveUserRoleRelationship" parameterType="UserRole" >
+		insert into t_user_role (
+		userid,roleid
+		) values (
+		#{userid},#{roleid}
+		)
+	</insert>
+	<select id="getUserById" parameterType="int" resultType="User">
+		select id,loginacct,userpswd,username,email,createtime from t_user where
+		id=#{id}
+	</select>
+	<update id="updateUser">
+		update t_user
+		set loginacct = #{loginacct}, username = #{username} ,email = #{email}
+		where id = #{id}
+	</update>
+	<delete id="deleteUser" parameterType="int">
+		delete from t_user where id = #{id}
+	</delete>
+
+<delete id="deleteUserBatch" parameterType="int">
+delete from t_user where id in
+<foreach collection="list" open="("  separator="," close=")" item="user">
+		#{user.id}
+</foreach>
+</delete>
+<delete id="deleteUserRole" >
+delete from t_user_role where userid=#{userid} and roleid in
+<foreach collection="ids" open="("  separator="," close=")" item="roleid">
+		#{roleid}
+</foreach>
+</delete>
+	
+</mapper>

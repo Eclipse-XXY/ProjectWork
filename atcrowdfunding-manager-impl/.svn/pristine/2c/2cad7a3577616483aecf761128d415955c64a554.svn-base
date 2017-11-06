@@ -1,0 +1,23 @@
+package com.xuxueya.atcrowdfunding.manager.service.impl;
+
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.xuxueya.atcrowdfunding.bean.User;
+import com.xuxueya.atcrowdfunding.manager.dao.UserDao;
+import com.xuxueya.atcrowdfunding.manager.service.UserService;
+@Service
+public class UserServiceImpl implements UserService {
+ @Autowired
+	private  UserDao userDao;
+	
+
+	@Override
+	public User queryUserForLogin(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return userDao.queryUserForLogin(map);
+	}
+
+}
