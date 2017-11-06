@@ -1,0 +1,9 @@
+com.atguigu.bean
+com.atguigu.dao
+com.atguigu.dao.impl
+com.atguigu.filter
+com.atguigu.service
+com.atguigu.service.impl
+com.atguigu.servlet
+com.atguigu.test
+com.atguigu.util
